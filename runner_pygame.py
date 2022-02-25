@@ -3,6 +3,7 @@ from sys import exit
 from random import randint
 
 
+
 def display_score():
     current_time=int((pygame.time.get_ticks()-start_time)/500)
     score_surface=test_font.render(f"Score: {current_time}", False, (64,64,64))
@@ -10,10 +11,10 @@ def display_score():
     screen.blit(score_surface, score_rect)
     return current_time
 
-def obstacle_movement(obstacle_list):
+def obstacle_movement(obstacle_list,time_add):
     if obstacle_list:
         for obstacle_rect in obstacle_list:
-            obstacle_rect.x -=6
+            obstacle_rect.x -=(6+time_add)
             
             if obstacle_rect.bottom==300:
                 screen.blit(snail_surface, obstacle_rect)
@@ -107,6 +108,11 @@ pygame.time.set_timer(snail_animation_timer,500)
 fly_animation_timer=pygame.USEREVENT + 3 
 pygame.time.set_timer(fly_animation_timer,200)
 
+game_animation_timer=pygame.USEREVENT+4
+pygame.time.set_timer(game_animation_timer, 2000)
+
+time_add=0
+ 
 while True:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -126,7 +132,7 @@ while True:
                 if event.key==pygame.K_SPACE:
                     jump_sound.play()
                     game_active=True
-        if game_active:    
+        if game_active:
             if event.type==obstacle_timer:
                 if randint(0,2):
                     obstacle_rec_list.append(snail_surface.get_rect(bottomright=(randint(900,1100),300)))
@@ -144,7 +150,9 @@ while True:
                 else:
                     fly_frame_index=0
                 fly_surface=fly_frames[fly_frame_index]
-
+            if event.type==game_animation_timer:
+                 time_add+=1
+                 print(time_add)
 
 
     #draw all our elements
@@ -171,7 +179,7 @@ while True:
         screen.blit(player_surface, player_rect)
 
         #obstacle movement
-        obstacle_rec_list=obstacle_movement(obstacle_rec_list)
+        obstacle_rec_list=obstacle_movement(obstacle_rec_list,time_add)
 
         # collision
         # if snail_rect.colliderect(player_rect):
@@ -193,6 +201,8 @@ while True:
             screen.blit(game_mess, game_mess_rect)
         else:
             screen.blit(score_mess, score_mess_rect)
+        #Timer
+        time_add=0    
 
     pygame.display.update()
     clock.tick((60))
