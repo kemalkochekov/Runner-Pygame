@@ -6,7 +6,7 @@ Infinite Runner Fun Game
 
 # How to run
 ```
-bar@foo$:~/python3 RunnerPygame.py
+bar@foo$:~/python3 runner_pygame.py
 ```
 
 # Interface
