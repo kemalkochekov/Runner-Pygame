@@ -152,7 +152,6 @@ while True:
                 fly_surface=fly_frames[fly_frame_index]
             if event.type==game_animation_timer:
                  time_add+=1
-                 print(time_add)
 
 
     #draw all our elements
