@@ -1,7 +1,7 @@
 import pygame
 from sys import exit
 from random import randint
-
+import math
 
 
 def display_score():
@@ -14,7 +14,7 @@ def display_score():
 def obstacle_movement(obstacle_list,time_add):
     if obstacle_list:
         for obstacle_rect in obstacle_list:
-            obstacle_rect.x -=(6+time_add)
+            obstacle_rect.x -=int(6+math.sqrt(2*time_add))
             
             if obstacle_rect.bottom==300:
                 screen.blit(snail_surface, obstacle_rect)
@@ -112,7 +112,7 @@ game_animation_timer=pygame.USEREVENT+4
 pygame.time.set_timer(game_animation_timer, 2000)
 
 time_add=0
- 
+
 while True:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -135,7 +135,7 @@ while True:
         if game_active:
             if event.type==obstacle_timer:
                 if randint(0,2):
-                    obstacle_rec_list.append(snail_surface.get_rect(bottomright=(randint(900,1100),300)))
+                    obstacle_rec_list.append(snail_surface.get_rect(bottomright=(randint(800,1400),300)))
                 else:
                     obstacle_rec_list.append(fly_surface.get_rect(bottomright=(randint(900,1100),200)))
             if event.type==snail_animation_timer:
